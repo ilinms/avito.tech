@@ -1,6 +1,5 @@
 from pages.issues_page import IssuesPage
 
-
 def test_create_issue(page):
     issues_page = IssuesPage(page)
 
