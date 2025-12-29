@@ -34,3 +34,14 @@ class IssuesPage:
         self.page.get_by_text(title).wait_for(timeout=5000)
         return True
 
+    def open_issue(self, title: str):
+        self.page.get_by_text(title).click()
+
+    def is_issue_card_opened(self) -> bool:
+        self.page.get_by_role("heading", name="Редактирование задачи").wait_for(timeout=5000)
+        return True
+
+
+
+
+
