@@ -1,3 +1,4 @@
+import time
 from pages.issues_page import IssuesPage
 
 

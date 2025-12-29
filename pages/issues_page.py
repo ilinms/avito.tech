@@ -66,6 +66,40 @@ class IssuesPage:
     def go_to_board_from_issue(self):
         self.page.get_by_role("link", name="Перейти на доску").click()
 
+    def change_status(self, status: str):
+        self.page.get_by_role("combobox", name="Статус").click()
+        self.page.get_by_role("option", name=status).click()
+
+    def close_issue_card(self):
+        self.page.keyboard.press("Escape")
+
+    def filter_by_status(self, status: str):
+        self.page.locator('div[role="combobox"]').first.click()
+        self.page.get_by_role("option", name=status).click()
+
+    def is_status_filter_applied(self, status: str) -> bool:
+        return self.page.locator(
+            'div[role="combobox"]'
+        ).first.get_by_text(status).is_visible()
+
+    def filter_by_board(self, board_name: str):
+        self.page.locator('div[role="combobox"]').nth(1).click()
+        self.page.get_by_role("option", name=board_name).click()
+
+    def is_board_filter_applied(self, board_name: str) -> bool:
+        return self.page.locator(
+            'div[role="combobox"]'
+        ).nth(1).get_by_text(board_name).is_visible()
+
+
+
+
+
+
+
+
+
+
 
 
 
