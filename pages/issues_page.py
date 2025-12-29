@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 
 class IssuesPage:
@@ -12,15 +12,25 @@ class IssuesPage:
         self.page.wait_for_load_state("networkidle")
 
     def create_issue(self, title: str, description: str):
-        # Нажимаем кнопку "Создать задачу"
         self.page.get_by_text("Создать задачу", exact=True).first.click()
 
-        # Заполняем поля в диалоге
-        self.page.get_by_label("Title", exact=True).fill(title)
-        self.page.get_by_label("Description", exact=True).fill(description)
+        self.page.get_by_label("Название").fill(title)
+        self.page.get_by_label("Описание").fill(description)
 
-        # Нажимаем кнопку сохранения
-        self.page.get_by_role("button", name="Create").click()
+        comboboxes = self.page.get_by_role("combobox")
+
+        comboboxes.nth(0).click()
+        self.page.get_by_role("option", name="Рефакторинг API").click()
+
+        comboboxes.nth(1).click()
+        self.page.get_by_role("option", name="Low").click()
+
+        comboboxes.nth(3).click()
+        self.page.get_by_role("option", name="Илья Романов").click()
+
+        self.page.get_by_role("button", name="Создать").click()
 
     def is_issue_visible(self, title: str) -> bool:
-        return self.page.get_by_text(title).is_visible()
+        self.page.get_by_text(title).wait_for(timeout=5000)
+        return True
+

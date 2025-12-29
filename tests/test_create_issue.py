@@ -1,12 +1,13 @@
+import time
 from pages.issues_page import IssuesPage
+
 
 def test_create_issue(page):
     issues_page = IssuesPage(page)
-
     issues_page.open()
 
-    title = "Test issue"
-    description = "Test description"
+    title = f"autotest issue {int(time.time())}"
+    description = "autotest description"
 
     issues_page.create_issue(title, description)
 
