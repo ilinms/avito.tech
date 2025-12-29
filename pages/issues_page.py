@@ -78,9 +78,8 @@ class IssuesPage:
         self.page.get_by_role("option", name=status).click()
 
     def is_status_filter_applied(self, status: str) -> bool:
-        return self.page.locator(
-            'div[role="combobox"]'
-        ).first.get_by_text(status).is_visible()
+        actual_status = self.get_status_filter_text()
+        return actual_status == status
 
     def filter_by_board(self, board_name: str):
         self.page.locator('div[role="combobox"]').nth(1).click()
@@ -90,6 +89,34 @@ class IssuesPage:
         return self.page.locator(
             'div[role="combobox"]'
         ).nth(1).get_by_text(board_name).is_visible()
+
+    def get_status_filter_text(self) -> str:
+        chip_label = self.page.locator(".MuiChip-label").first
+        return chip_label.inner_text().strip()
+
+    def is_status_filter_applied(self, status: str) -> bool:
+        actual_status = self.get_status_filter_text()
+        return actual_status == status
+
+    def are_all_issues_have_status(self, status: str) -> bool:
+        status_chips = self.page.locator('div.MuiChip-root')
+
+        if status_chips.count() == 0:
+            return False
+
+        for i in range(status_chips.count()):
+            chip_text = status_chips.nth(i).inner_text().strip()
+            if chip_text != status:
+                print(f"Найден статус '{chip_text}', а ожидается '{status}'")
+                return False
+
+        return True
+
+    def is_status_filter_applied_correctly(self, status: str) -> bool:
+        filter_applied = self.is_status_filter_applied(status)
+        list_filtered = self.are_all_issues_have_status(status)
+
+        return filter_applied and list_filtered
 
 
 

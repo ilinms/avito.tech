@@ -57,7 +57,7 @@ tests/
 - test_search_issue.py — поиск задачи по названию
 - test_go_to_board_from_issue_card.py — переход на доску из карточки задачи
 - test_open_board_from_projects.py — открытие доски со страницы проектов
-- test_filter_issues_by_status.py — фильтрация задач по статусу
+- test_filter_issues_by_status.py — фильтрация задач по статусам (InProgressб, Backlog, Done)
 - test_filter_issues_by_board.py — фильтрация задач по доске проекта
 
 pytest.ini  
