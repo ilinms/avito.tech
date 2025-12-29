@@ -41,6 +41,38 @@ class IssuesPage:
         self.page.get_by_role("heading", name="Редактирование задачи").wait_for(timeout=5000)
         return True
 
+    def search_issue(self, text: str):
+        self.page.get_by_placeholder("Поиск").fill(text)
+        self.page.wait_for_timeout(500)
+
+    def is_issue_in_list(self, title: str) -> bool:
+        self.page.get_by_text(title).wait_for(timeout=5000)
+        return True
+
+    def go_to_board(self):
+        self.page.get_by_role("link", name="Перейти на доску").click()
+
+    def open_projects(self):
+        self.page.get_by_role("link", name="Проекты").click()
+
+    def open_project_board(self, project_name):
+        project_card = self.page.get_by_role("heading", name=project_name).locator("..").locator("..")
+        project_card.get_by_role("link", name="Перейти к доске").click()
+
+    def is_board_opened(self):
+        self.page.wait_for_url("**/board/**", timeout=5000)
+        return True
+
+    def go_to_board_from_issue(self):
+        self.page.get_by_role("link", name="Перейти на доску").click()
+
+
+
+
+
+
+
+
 
 
 
