@@ -1,4 +1,3 @@
-import time
 from pages.issues_page import IssuesPage
 
 def test_filter_issues_by_status(page):
