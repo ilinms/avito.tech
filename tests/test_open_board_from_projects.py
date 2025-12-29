@@ -1,7 +1,6 @@
 from pages.issues_page import IssuesPage
 
 
-
 def test_open_board_from_projects(page):
 
     issues_page = IssuesPage(page)

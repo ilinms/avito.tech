@@ -118,6 +118,69 @@ class IssuesPage:
 
         return filter_applied and list_filtered
 
+    def filter_by_board(self, board_name: str):
+        self.page.locator('div[role="combobox"]').nth(1).click()
+        self.page.get_by_role("option", name=board_name).click()
+
+    def get_board_filter_text(self) -> str:
+        chip_label = self.page.locator(".MuiChip-label").nth(1)  # Берём второй chip (второй фильтр)
+        return chip_label.inner_text().strip()
+
+    def is_board_filter_applied(self, board_name: str) -> bool:
+        actual_board = self.get_board_filter_text()
+        return actual_board == board_name
+
+    def get_all_issue_boards(self) -> list:
+        issue_info = self.page.locator('p.MuiTypography-body2')
+        boards = []
+
+        for i in range(issue_info.count()):
+            text = issue_info.nth(i).inner_text()
+            if "Доска:" in text:
+                board_part = text.split("Доска:")[1].split("|")[0].strip()
+                boards.append(board_part)
+
+        return boards
+
+    def are_all_issues_have_board(self, board_name: str) -> bool:
+        all_boards = self.get_all_issue_boards()
+
+        if not all_boards:
+            return False
+
+        for board in all_boards:
+            if board != board_name:
+                print(f"Найдена доска '{board}', а ожидается '{board_name}'")
+                return False
+
+        return True
+
+    def is_board_filter_applied_correctly(self, board_name: str) -> bool:
+        filter_applied = self.is_board_filter_applied(board_name)
+
+        list_filtered = self.are_all_issues_have_board(board_name)
+
+        return filter_applied and list_filtered
+
+    def get_board_filter_text_debug(self) -> str:
+        chips = self.page.locator(".MuiChip-label")
+        count = chips.count()
+        print(f"Найдено chip элементов: {count}")
+
+        for i in range(count):
+            text = chips.nth(i).inner_text().strip()
+            print(f"Chip {i}: '{text}'")
+
+        board_chip = self.page.locator('div[role="combobox"]').nth(1).inner_text().strip()
+        print(f"Текст в dropdown'е доски: '{board_chip}'")
+
+        return board_chip
+
+    def is_board_filter_applied(self, board_name: str) -> bool:
+        actual_board = self.get_board_filter_text_debug()
+        print(f"Сравниваем: ожидаем '{board_name}', получили '{actual_board}'")
+        return actual_board == board_name
+
 
 
 
